@@ -1,0 +1,13 @@
+/* css for NewsPaperColumns */
+
+.no-csscolumns .npcolumnsinner {
+  position: relative;
+  clear: both;
+  width: 100%;
+  display:inline-block;
+}
+
+.no-csscolumns .withdivider .npcolumnsinner {background: url('1by1.gif') repeat-y center top;}
+.no-csscolumns .npleftcolumn, .no-csscolumns .nprightcolumn {width: 48%;}
+.no-csscolumns .npleftcolumn {float: left;}
+.no-csscolumns .nprightcolumn {float: right;}
