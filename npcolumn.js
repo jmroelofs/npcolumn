@@ -1,7 +1,7 @@
 /*
 
   Script:   npColumn (Newspaper Columns)
-  Version:  2.5, jQuery plugin version
+  Version:  2.6, Use strict syntax
   Authors:  Jan Martin Roelofs (www.roelofs-coaching.nl)
   Desc:     Divides sub-elements evenly over two newspaper columns
   Uses:     npcolumn.css
@@ -15,6 +15,7 @@
 (function($){
 
   $.fn.npColumn = function(options){
+    'use strict';
 
     var settings = $.extend({
       // overridable default minWidth
@@ -48,11 +49,11 @@
       // we'll generate newspaper columns with evenly divided paragraphs
       // if you want a vertical divider the element needs to have class 'withdivider'
 
-      argument.each(function(){with (this){
+      argument.each(function(){
 
         // we only use columns if we have enough space
-        if ((offsetWidth > settings.minWidth * (1 + settings.backlash)) &&
-            children[0] && !(children[0].className == 'npcolumnsinner')){
+        if ((this.offsetWidth > settings.minWidth * (1 + settings.backlash)) &&
+            this.children[0] && !(this.children[0].className == 'npcolumnsinner')){
 
           // make new structure
           var innerDiv       = document.createElement('div'),
@@ -66,11 +67,11 @@
           rightDiv.className = 'nprightcolumn';
 
           // fill left column and put all in place
-          for (var i= children.length; i > 0; i--)
-            leftInnerDiv.appendChild(children[0]);
+          for (var i= this.children.length; i > 0; i--)
+            leftInnerDiv.appendChild(this.children[0]);
           innerDiv.appendChild( leftDiv).appendChild( leftInnerDiv);
           innerDiv.appendChild(rightDiv).appendChild(rightInnerDiv);
-          appendChild(innerDiv);
+          this.appendChild(innerDiv);
 
           if (settings.adjustMargins){
             // some adjustments to get the margins right in strict mode
@@ -83,8 +84,8 @@
           // we try to divide close to the middle whilst preferring the left column, using a factor of 1.2
           var sliceIndex = 1;
           while ((sliceIndex + 1 < leftInnerDiv.children.length) &&
-              (Math.abs((offsetHeight/2) - leftInnerDiv.children[sliceIndex  ].offsetTop) * settings.weighFactor >
-               Math.abs((offsetHeight/2) - leftInnerDiv.children[sliceIndex+1].offsetTop)))
+              (Math.abs((this.offsetHeight/2) - leftInnerDiv.children[sliceIndex  ].offsetTop) * settings.weighFactor >
+               Math.abs((this.offsetHeight/2) - leftInnerDiv.children[sliceIndex+1].offsetTop)))
             sliceIndex++;
 
           // all children after the slice index are put in the right column
@@ -96,22 +97,22 @@
             rightInnerDiv.style.marginTop    = (-rightInnerDiv.offsetTop) + 'px';
             rightInnerDiv.style.marginBottom = ( rightInnerDiv.offsetHeight - rightDiv.offsetHeight) + 'px';
             // sometimes we need one adjustment more
-            innerDiv.style.marginBottom = (innerDiv.offsetHeight - offsetHeight) + 'px';
+            innerDiv.style.marginBottom = (innerDiv.offsetHeight - this.offsetHeight) + 'px';
           }
         }
 
         // we undo the columns if we have little space
-        else if ((offsetWidth < settings.minWidth * (1 - settings.backlash)) &&
-            children[0] && children[0].className == 'npcolumnsinner'){
-          var  leftContainer= children[0].children[0].children[0],
-              rightContainer= children[0].children[1].children[0]
+        else if ((this.offsetWidth < settings.minWidth * (1 - settings.backlash)) &&
+            this.children[0] && this.children[0].className == 'npcolumnsinner'){
+          var  leftContainer= this.children[0].children[0].children[0],
+              rightContainer= this.children[0].children[1].children[0]
           for (var i=  leftContainer.children.length; i > 0; i--)
-            appendChild( leftContainer.children[0]);
+            this.appendChild( leftContainer.children[0]);
           for (var i= rightContainer.children.length; i > 0; i--)
-            appendChild(rightContainer.children[0]);
-          removeChild(children[0]);
+            this.appendChild(rightContainer.children[0]);
+          this.removeChild(this.children[0]);
         }
-      }})
+      })
     }
   }
 
